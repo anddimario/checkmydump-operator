@@ -1,0 +1,3 @@
+*.txt
+*.yaml
+!.pre-commit-config.yaml

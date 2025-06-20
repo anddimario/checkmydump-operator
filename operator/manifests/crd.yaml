@@ -1,0 +1,61 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: checkcnpgs.checkmydump.com
+  namespace: checkmydump
+spec:
+  scope: Namespaced
+  group: checkmydump.com
+  names:
+    kind: CheckCNPG
+    plural: checkcnpgs
+    singular: checkcnpg
+    shortNames:
+      - ckp
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              # x-kubernetes-preserve-unknown-fields: true
+              properties:
+                schedule:
+                  type: string
+                  description: Cron format (e.g., "0 1 * * *"), in UTC
+                size:
+                  type: string
+                  description: The database size for the volume
+                sourceClusterName:
+                  type: string
+                  description: The original cluster name from the backup
+                secretName:
+                  type: string
+                  description: |
+                    The secret with the credentials to access the backup bucket
+                    (ACCESS_KEY_ID and SECRET_ACCESS_KEY)
+                destinationPath:
+                  type: string
+                  description: |
+                    The path in the bucket where the backup is stored.
+                    It's the same used in cloudnative pg
+                endpointURL:
+                  type: string
+                  description: |
+                    The endpoint url of the s3 service
+                    It's the same used in cloudnative pg
+                checkQueries:
+                  type: array
+                  items:
+                    type: string
+                  description: |
+                    The endpoint url of the s3 service
+                    It's the same used in cloudnative pg
+            status:
+              type: object
+              x-kubernetes-preserve-unknown-fields: true

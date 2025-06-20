@@ -1,0 +1,14 @@
+[project]
+name = "operator"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "croniter>=6.0.0",
+    "kopf>=1.38.0",
+    "kubernetes>=33.1.0",
+]
+
+[tool.ruff]
+line-length = 120

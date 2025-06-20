@@ -1,0 +1,22 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkmydump-operator
+  namespace: checkmydump
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      application: checkmydump-operator
+  template:
+    metadata:
+      labels:
+        application: checkmydump-operator
+    spec:
+      serviceAccountName: checkmydump-account
+      containers:
+        - name: checkmydump-operator
+          image: anddimario/checkmydump:v0.0.1

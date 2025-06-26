@@ -20,6 +20,7 @@
             pkgs.yq-go
             pkgs.gitleaks
             pkgs.pre-commit
+            pkgs.cmctl
           ];
 
           shellHook = ''

@@ -28,7 +28,7 @@ spec:
                 schedule:
                   type: string
                   description: Cron format (e.g., "0 1 * * *"), in UTC
-                size:
+                dbSize:
                   type: string
                   description: The database size for the volume
                 sourceClusterName:
@@ -49,13 +49,10 @@ spec:
                   description: |
                     The endpoint url of the s3 service
                     It's the same used in cloudnative pg
-                checkQueries:
-                  type: array
-                  items:
-                    type: string
-                  description: |
-                    The endpoint url of the s3 service
-                    It's the same used in cloudnative pg
+                logStore:
+                  type: boolean
+                  description: "Decide if store the logs (default false)"
+
             status:
               type: object
               x-kubernetes-preserve-unknown-fields: true
@@ -97,7 +94,7 @@ spec:
                 notification:
                   type: string
                   description: "Where notify if result not match"
-                store:
+                logs:
                   type: boolean
                   description: "Decide if store the logs (default false)"
             status:

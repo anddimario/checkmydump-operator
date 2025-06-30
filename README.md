@@ -110,11 +110,12 @@ metadata:
   namespace: checkmydump
 spec:
   schedule: "0 3 * * *"
-  size: 1G
+  dbSize: 1G
   sourceClusterName: cluster-example
   secretName: ...
   destinationPath: "..."
   endpointURL: "..."
+  logStore: true
 ---
 apiVersion: checkmydump.com/v1alpha1
 kind: CheckMyDumpQuery

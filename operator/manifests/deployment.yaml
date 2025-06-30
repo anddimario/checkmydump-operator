@@ -19,4 +19,4 @@ spec:
       serviceAccountName: checkmydump-account
       containers:
         - name: checkmydump-operator
-          image: anddimario/checkmydump:v0.0.1
+          image: yourepo/checkmydump:v0.0.1

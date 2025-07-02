@@ -85,16 +85,24 @@ make deploy
 
 ### Create the secret with bucket credentials in the `checkmydump` namespace
 
+> NOTE
+> `SMTP_USERNAME` and `SMTP_PASSWORD` are optional, required only if enabled notifications
+
+> NOTE
+> SMTP client use ssl
+
 ```yaml
 apiVersion: v1
 kind: Secret
 type: Opaque
 metadata:
-  name: bucket-cred
+  name: checkmydump-test-cred
   namespace: checkmydump
 stringData:
   ACCESS_KEY_ID: EDIT_HERE
   SECRET_ACCESS_KEY: EDIT_HERE
+  SMTP_USERNAME: EDIT_HERE
+  SMTP_PASSWORD: EDIT_HERE
 ```
 
 ### Create the resource

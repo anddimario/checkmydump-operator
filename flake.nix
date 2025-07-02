@@ -21,7 +21,6 @@
             pkgs.gitleaks
             pkgs.pre-commit
             pkgs.cmctl
-            pkgs.kubernetes-helm
           ];
 
           shellHook = ''

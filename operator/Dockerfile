@@ -20,4 +20,4 @@ COPY . .
 RUN adduser -D -s /bin/bash app
 USER app
 
-CMD kopf run main.py
+CMD ["kopf", "run", "main.py"]

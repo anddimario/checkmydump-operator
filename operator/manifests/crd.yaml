@@ -23,6 +23,13 @@ spec:
           properties:
             spec:
               type: object
+              required:
+                - schedule
+                - dbSize
+                - sourceClusterName
+                - secretName
+                - destinationPath
+                - endpointURL
               # x-kubernetes-preserve-unknown-fields: true
               properties:
                 schedule:
@@ -38,7 +45,7 @@ spec:
                   type: string
                   description: |
                     The secret with the credentials to access the backup bucket
-                    (ACCESS_KEY_ID and SECRET_ACCESS_KEY)
+                    (ACCESS_KEY_ID and SECRET_ACCESS_KEY) and SMTP credentials
                 destinationPath:
                   type: string
                   description: |
@@ -52,6 +59,18 @@ spec:
                 logStore:
                   type: boolean
                   description: "Decide if store the logs (default false)"
+                smtpHost:
+                  type: string
+                  description: "SMTP host"
+                smtpPort:
+                  type: integer
+                  description: "SMTP port"
+                smtpFrom:
+                  type: string
+                  description: "SMTP from"
+                smtpTo:
+                  type: string
+                  description: "SMTP to"
 
             status:
               type: object
@@ -92,7 +111,7 @@ spec:
                   type: string
                   description: "The expected result (stringified)"
                 notification:
-                  type: string
+                  type: boolean
                   description: "Where notify if result not match"
                 logs:
                   type: boolean

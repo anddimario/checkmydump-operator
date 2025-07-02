@@ -24,11 +24,14 @@ stop-dev:
 run-dev:
 	cd operator && uv run kopf run main.py
 
-.PHONY: push
-push:
+.PHONY: build
+build:
 	cd operator && uv pip freeze > requirements.txt
 	yq e ".spec.template.spec.containers[0].image = \"$(REPOSITORY):$(IMAGE_TAG)\"" -i $(DEPLOYMENT_FILE)
 	docker build -t $(REPOSITORY):$(IMAGE_TAG) operator/
+
+.PHONY: push
+push: build
 	docker push $(REPOSITORY):$(IMAGE_TAG)
 
 .PHONY: load-kind
@@ -54,9 +57,9 @@ cleanup-crd:
 	kubectl delete -f ./operator/manifests/rbac.yaml
 	kubectl delete -f ./operator/manifests/namespace.yaml
 
-.PHONY: cleanup-others
-cleanup-others:
+.PHONY: cleanup-operator
+cleanup-operator:
 	kubectl delete -f $(DEPLOYMENT_FILE)
 
 .PHONY: cleanup
-cleanup: cleanup-others cleanup-crd
+cleanup: cleanup-operator cleanup-crd

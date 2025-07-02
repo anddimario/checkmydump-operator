@@ -6,17 +6,20 @@ from kubernetes import client
 
 from datetime import datetime, timezone, timedelta
 from croniter import croniter
-from tasks.manifest import define_cluster_manifest, define_barman_manifest
-from tasks.storage import init_log_storage, delete_log_storage
-from tasks.check import (
+from libs.manifest import define_cluster_manifest, define_barman_manifest
+from libs.storage import init_log_storage, delete_log_storage
+from libs.pod import (
     get_pod_status,
+    create_log_pod,
+    delete_pod,
+)
+from libs.check import (
     run_query,
     terminate_cluster,
     get_queries,
-    create_log_pod,
     run_command,
-    delete_pod,
 )
+from libs.notification import send_notification
 
 # You can store the last run time in-memory or in annotations/state if needed
 last_run_times = {}  # TODO see use better ways
@@ -132,6 +135,7 @@ async def scheduled_check_status(spec, name, namespace, logger, **kwargs):
                 create_log_pod(logger_pod_name, namespace)
 
             log_str = ""
+            notification_str = ""
             for query in checkQueries:
                 success, query_output = run_query(query["query"], pod_name, namespace)
 
@@ -140,7 +144,9 @@ async def scheduled_check_status(spec, name, namespace, logger, **kwargs):
                         log_str += (
                             f"Query: {query['query']} - Expected: {query['expectedResult']} - Output: {query_output}\n"
                         )
-                        # TODO alert if it's present
+                        # If notification to create the alert message
+                        if "notification" in query:
+                            notification_str += log_str
 
             # Write logs
             if log_str != "":
@@ -164,6 +170,10 @@ async def scheduled_check_status(spec, name, namespace, logger, **kwargs):
 
             # terminate pod log
             delete_pod(logger_pod_name, namespace)
+
+            # send notification
+            if notification_str != "":
+                send_notification(notification_str, spec, namespace)
 
         terminate_cluster(name, namespace)
 
